@@ -38,7 +38,7 @@ class Poster
     {
         $this->posterInfo['width']  = $width;
         $this->posterInfo['height'] = $height;
-
+        $this->canvas->scaleimage($width, $height);
         return $this;
     }
 
@@ -86,7 +86,7 @@ class Poster
     /**
      * 合并图片
      */
-    public function addImage(string $pic, int $x, int $y, int $width = 0, int $height = 0)
+    public function addImage($pic, int $x, int $y, int $width = 0, int $height = 0)
     {
         if ($x < 0) {
             throw new \Exception("x不能小于0");
@@ -103,7 +103,7 @@ class Poster
             throw new \Exception("添加图片时图片不能超出底图");
         }
 
-        $img  = new \Imagick($pic);
+        $img  = $this->getImagick($pic);
         $info = $img->getImageGeometry();
         $p_w  = $width > 0 ? $width : $info['width'];
         $p_h  = $height > 0 ? $height : $info['height'];
@@ -114,14 +114,14 @@ class Poster
         }
 
         $this->canvas->compositeImage($img, \imagick::COMPOSITE_OVER, $x, $y);
+        $img->destroy();
         return $this;
     }
-
 
     /**
      * 写入文本
      */
-    public function addText($text, $x, $y, $fontSize = 16, $fontColor = 'black',int $fontWeight = 0)
+    public function addText($text, $x, $y, $fontSize = 16, $fontColor = 'black', int $fontWeight = 0)
     {
         $draw = new \ImagickDraw();
 
@@ -149,14 +149,14 @@ class Poster
         $draw->annotation($x, $y, $text);
 
         $this->canvas->drawImage($draw);
-        $draw->destory();
+        $draw->destroy();
         return $this;
     }
 
     /**
      * 画线
      */
-    public function addLine($x1,$y1,$x2,$y2,$color = 'gray',$fontSize = 20)
+    public function addLine($x1, $y1, $x2, $y2, $color = 'gray', $fontSize = 20)
     {
         $draw = new \ImagickDraw();
 
@@ -168,7 +168,7 @@ class Poster
 
         $draw->line($x1, $y1, $x2, $y2);
         $this->canvas->drawImage($draw);
-        $draw->destory();
+        $draw->destroy();
         return $this;
     }
     /**
@@ -178,14 +178,14 @@ class Poster
     {
         $this->canvas->setFormat($this->posterInfo['type']);
         $this->canvas->writeImage($filename);
-        $this->canvas->destory();
+        $this->canvas->destroy();
     }
 
-    public function saveImagick($filename,$imagick,$type = 'png')
+    public function saveImagick($filename, $imagick, $type = 'png')
     {
         $imagick->setFormat($type);
         $imagick->writeImage($filename);
-        $imagick->destory();
+        $imagick->destroy();
     }
     /**
      * 获取imagick对象
@@ -209,12 +209,13 @@ class Poster
         return false;
     }
     /**
-      * 头像处理
-      */
+     * 头像处理
+     */
     public function pic($pic, int $type = 0, array $option = [])
     {
 
         $pic = $this->getImagick($pic);
+        $pic->setFormat('png');
         switch ($type) {
             case self::PIC_CIRCULAR:
                 return $this->circular($pic);
@@ -222,9 +223,10 @@ class Poster
                 return $this->radius_border($pic, $option);
             case self::PIC_RADIUS:
                 return $this->radius($pic, $option);
+            case 0:
+                return $pic;
             default:
-                return $img;
-                break;
+                throw new \Exception('无效的参数');
         }
     }
 
@@ -285,7 +287,7 @@ class Poster
      */
     public function getInfo($img)
     {
-        $img = $this->getImagick($img);
+        $img  = $this->getImagick($img);
         $info = $img->getImageGeometry();
         $img->destroy();
         return $info;
@@ -293,7 +295,7 @@ class Poster
     /**
      * 获取文本在图片中所占的长宽
      */
-    public function getTextInfo($text, $fontSize = 16, $fontColor = 'black',int $fontWeight = 0)
+    public function getTextInfo($text, $fontSize = 16, $fontColor = 'black', int $fontWeight = 0)
     {
         $draw = new \ImagickDraw();
 
@@ -308,7 +310,7 @@ class Poster
         }
 
         $metrix = $this->canvas->queryFontMetrics($draw, $text);
-        $draw->destory();
+        $draw->destroy();
         return $metrix;
     }
 }
