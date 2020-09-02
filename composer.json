@@ -1,0 +1,17 @@
+{
+    "name": "dongdavid\/utils",
+    "description": "工具类",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "DongDavid",
+            "email": "ddv576029053@outlook.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Dongdavid\\Utils\\": "src"
+        }
+    }
+}
