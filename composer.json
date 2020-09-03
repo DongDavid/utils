@@ -8,7 +8,10 @@
             "email": "ddv576029053@outlook.com"
         }
     ],
-    "require": {},
+    "require": {
+        "endroid/qr-code": "^3.9",
+        "ext-imagick": "*"
+    },
     "autoload": {
         "psr-4": {
             "Dongdavid\\Utils\\": "src"
