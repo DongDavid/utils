@@ -11,11 +11,38 @@ $ composer require dongdavid/utils -vvv
 
 ## Require  
 
-* imageMagick
+* ext-imageMagick
 
 ## Usage
 
-TODO
+```php
+use dongdavid\Utils\Poster;
+
+$poster = new Poster();
+
+// 生成圆形头像
+
+$poster->pic('./pic.png',Poster::PIC_CIRCULAR)->writeImage('./test.png');
+
+// 生成二维码 
+
+$poster->setQrcode('https://www.dongdavid.com','./qr.png');
+
+// 生成海报
+        // 设置背景图片
+$poster->setImgBackground('./beijing.png')
+        // 向海报上添加图片good_img 起始坐标为 (0,44) 添加的图片长宽为 600,800
+        ->addImage('./good_img.jpeg', 0, 44, 600, 800)
+        // 向海报上添加图片good_img 起始坐标为 (15.5,875) 添加的图片长宽为 72,72
+        ->addImage('./user_pic.png', 15.5, 875, 72, 72)
+        // 写入文字 包括中文 自带了字体文件 PingFang-SC-Bold.ttf
+        // ->setFont('./xxx.ttf')
+        ->addText('自带字体文件能写入中文',50,800,20,'black')
+        // 添加线条， 如划线价
+        ->addLine(0,0,30,30)
+        // 保存海报到本地
+        ->save('./poster.png');
+```
 
 ## Test  
 
