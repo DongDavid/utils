@@ -1,7 +1,7 @@
 <?php
+
 namespace Dongdavid\Utils;
 
-class TestPoster {
-
-
+class TestPoster
+{
 }
