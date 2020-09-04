@@ -612,7 +612,7 @@ class Poster
         $qrCode->setErrorCorrectionLevel(\Endroid\QrCode\ErrorCorrectionLevel::HIGH());
         $qrCode->setSize(330);
         $qrCode->setMargin(10);
-        if( !empty($logo_path) ){
+        if (!empty($logo_path)) {
             $qrCode->setLogoPath($logo_path);
             $qrCode->setLogoSize(100, 100);
         }
