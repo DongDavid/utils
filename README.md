@@ -2,6 +2,8 @@
 
 <p align="center"> 工具类库.</p>
 
+[![StyleCI](https://github.styleci.io/repos/292322123/shield)](https://github.styleci.io/repos/292322123)
+
 
 ## Installing
 
