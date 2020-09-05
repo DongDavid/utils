@@ -34,9 +34,9 @@ class Poster
      * @var array 海报尺寸类型
      */
     private $posterInfo = [
-        'width'  => 1064,
+        'width' => 1064,
         'height' => 600,
-        'type'   => 'png',
+        'type' => 'png',
     ];
     /**
      * @var string 字体文件路径
@@ -44,11 +44,11 @@ class Poster
     private $font = __DIR__.'/assets/PingFang-SC-Bold.ttf';
 
     /**
-     * @param string｜Imagick $background 背景图片
+     * @param \Imagick|string $background 背景图片
      */
     public function __construct($background = '')
     {
-        if (!empty($background)) {
+        if ( ! empty($background)) {
             $this->setImgBackground($background);
         }
     }
@@ -56,7 +56,7 @@ class Poster
     /**
      * @param bool $strict 是否开启严格模式
      *
-     * @return Poster $this
+     * @return $this
      */
     public function setStrict($strict)
     {
@@ -71,7 +71,7 @@ class Poster
      * @param $x float 分辨率x
      * @param $y float 分辨率y
      *
-     * @return Poster $this
+     * @return $this
      */
     public function setResolution($x, $y)
     {
@@ -102,11 +102,11 @@ class Poster
      *
      * @param string $font 设置字体文件路径
      *
-     * @return Poster $this
+     * @return $this
      */
     public function setFont(string $font)
     {
-        if (!file_exists($font)) {
+        if ( ! file_exists($font)) {
             throw new \Exception('文件不存在:'.$font);
         }
         $this->font = $font;
@@ -119,7 +119,7 @@ class Poster
      *
      * @param string $type png|jpeg|...
      *
-     * @return Poster $this
+     * @return $this
      */
     public function setType($type)
     {
@@ -131,9 +131,9 @@ class Poster
     /**
      * 设置底图背景.
      *
-     * @param string|Imagick $image 海报底图
+     * @param \Imagick|string $image 海报底图
      *
-     * @return Poster $this
+     * @return $this
      */
     public function setImgBackground($image)
     {
@@ -152,7 +152,7 @@ class Poster
      * @param int    $height 底图长度
      * @param string $color  底图颜色 none表示透明
      *
-     * @return Poster $this
+     * @return $this
      */
     public function setEmptyBackground(int $width, int $height, string $color = 'none')
     {
@@ -167,15 +167,14 @@ class Poster
     /**
      * 合并图片到底图.
      *
-     * @param string|Imagick $pic    要合并的图片 支持二进制字符串、本地文件路径、远程图片uri、Imagick对象
-     * @param int            $x      图片的起始位置X坐标
-     * @param int            $y      图片的起始位置y坐标
-     * @param int            $width  图片的最终宽度
-     * @param int            $height 图片的最终高度
+     * @param \Imagick|string $pic    要合并的图片 支持二进制字符串、本地文件路径、远程图片uri、Imagick对象
+     * @param int             $x      图片的起始位置X坐标
+     * @param int             $y      图片的起始位置y坐标
+     * @param int             $width  图片的最终宽度
+     * @param int             $height 图片的最终高度
      *
+     * @return $this
      * @throws \ImagickException
-     *
-     * @return Poster $this
      */
     public function addImage($pic, int $x, int $y, int $width = 0, int $height = 0)
     {
@@ -220,9 +219,8 @@ class Poster
      * @param string $fontColor  文字的颜色 支持rgb  'white'|'rgb(255,255,255)'
      * @param int    $fontWeight 文字粗细 取值范围100-500
      *
+     * @return $this
      * @throws \Exception
-     *
-     * @return Poster $this
      */
     public function addText(string $text, int $x, int $y, int $fontSize = 16, $fontColor = 'black', int $fontWeight = 0)
     {
@@ -267,7 +265,7 @@ class Poster
      * @param string $color    线的颜色 gray|rgb(255,255,255)
      * @param int    $fontSize 线的粗细
      *
-     * @return Poster $this
+     * @return $this
      */
     public function addLine(int $x1, int $y1, int $x2, int $y2, string $color = 'gray', int $fontSize = 20)
     {
@@ -284,6 +282,20 @@ class Poster
     }
 
     /**
+     * 添加自定义的元素
+     *
+     * @param \ImagickDraw $draw
+     *
+     * @return $this
+     */
+    public function addDraw(\ImagickDraw $draw)
+    {
+        $this->canvas->drawImage($draw);
+
+        return $this;
+    }
+
+    /**
      * 保存海报到文件.
      *
      * @param string $filename 海报保存路径
@@ -293,7 +305,7 @@ class Poster
     public function save(string $filename = '')
     {
         $this->canvas->setFormat($this->posterInfo['type']);
-        if (!empty($filename)) {
+        if ( ! empty($filename)) {
             $this->canvas->writeImage($filename);
             $this->canvas->destroy();
 
@@ -308,9 +320,9 @@ class Poster
     /**
      * 将一个Imagick对象保存到文件.
      *
-     * @param stirng  $filename 图片保存路径
-     * @param Imagick $imagick  imagick对象
-     * @param string  $type     图片类型 png|jpeg
+     * @param stirng   $filename 图片保存路径
+     * @param \Imagick $imagick  imagick对象
+     * @param string   $type     图片类型 png|jpeg
      */
     public function saveImagick(string $filename, \Imagick $imagick, string $type = 'png')
     {
@@ -322,7 +334,7 @@ class Poster
     /**
      * 获取imagick对象
      *
-     * @param string|Imagick $obj 本地图片路径、远程图片链接、二进制图片字符串、Imagick对象
+     * @param \Imagick|string $obj 本地图片路径、远程图片链接、二进制图片字符串、Imagick对象
      *
      * @return \Imagick
      */
@@ -345,13 +357,12 @@ class Poster
     /**
      * 头像处理.
      *
-     * @param string|\Imagick $pic    需要处理的图片
+     * @param \Imagick|string $pic    需要处理的图片
      * @param int             $type   处理类型
      * @param array           $option 额外参数
      *
+     * @return \Imagick
      * @throws \Exception
-     *
-     * @return Imagick
      */
     public function pic($pic, int $type = 0, array $option = [])
     {
@@ -443,7 +454,7 @@ class Poster
     /**
      * 获取图片的长宽.
      *
-     * @param string|\Imagic $img
+     * @param \Imagic|string $img
      *
      * @return array ['width'=>32,'height'=>32]
      */
@@ -503,16 +514,16 @@ class Poster
         if ($metrix['textWidth'] < $maxWidth) {
             return [
                 [
-                    'text'   => $text,
-                    'width'  => $metrix['textWidth'],
+                    'text' => $text,
+                    'width' => $metrix['textWidth'],
                     'height' => $metrix['textHeight'],
                 ],
             ];
         }
         $line = [];
         $tmp = [
-            'text'   => '',
-            'width'  => 0,
+            'text' => '',
+            'width' => 0,
             'height' => 0,
         ];
         $words = preg_split('//u', $text, -1, PREG_SPLIT_NO_EMPTY);
@@ -521,8 +532,8 @@ class Poster
             if ($info['textWidth'] >= $maxWidth) {
                 $line[] = $tmp;
                 $tmp = [
-                    'text'   => $word,
-                    'width'  => 0,
+                    'text' => $word,
+                    'width' => 0,
                     'height' => 0,
                 ];
             } else {
@@ -612,7 +623,7 @@ class Poster
         $qrCode->setErrorCorrectionLevel(\Endroid\QrCode\ErrorCorrectionLevel::HIGH());
         $qrCode->setSize(330);
         $qrCode->setMargin(10);
-        if (!empty($logo_path)) {
+        if ( ! empty($logo_path)) {
             $qrCode->setLogoPath($logo_path);
             $qrCode->setLogoSize(100, 100);
         }
