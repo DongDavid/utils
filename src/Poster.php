@@ -44,7 +44,7 @@ class Poster
     private $font = __DIR__.'/assets/PingFang-SC-Bold.ttf';
 
     /**
-     * @param \Imagick|string $background 背景图片
+     * @param  \Imagick|string  $background  背景图片
      */
     public function __construct($background = '')
     {
@@ -54,7 +54,7 @@ class Poster
     }
 
     /**
-     * @param bool $strict 是否开启严格模式
+     * @param  bool  $strict  是否开启严格模式
      *
      * @return $this
      */
@@ -83,8 +83,8 @@ class Poster
     /**
      * 设置海报底图尺寸.
      *
-     * @param int $width  宽度
-     * @param int $height 长度
+     * @param  int  $width  宽度
+     * @param  int  $height  长度
      *
      * @return $this
      */
@@ -100,7 +100,7 @@ class Poster
     /**
      * 设置字体文件路径.
      *
-     * @param string $font 设置字体文件路径
+     * @param  string  $font  设置字体文件路径
      *
      * @return $this
      */
@@ -117,7 +117,7 @@ class Poster
     /**
      * 设置海报格式.
      *
-     * @param string $type png|jpeg|...
+     * @param  string  $type  png|jpeg|...
      *
      * @return $this
      */
@@ -131,7 +131,7 @@ class Poster
     /**
      * 设置底图背景.
      *
-     * @param \Imagick|string $image 海报底图
+     * @param  \Imagick|string  $image  海报底图
      *
      * @return $this
      */
@@ -148,9 +148,9 @@ class Poster
     /**
      * 设置空画布作为背景.
      *
-     * @param int    $width  底图宽度
-     * @param int    $height 底图长度
-     * @param string $color  底图颜色 none表示透明
+     * @param  int  $width  底图宽度
+     * @param  int  $height  底图长度
+     * @param  string  $color  底图颜色 none表示透明
      *
      * @return $this
      */
@@ -167,11 +167,11 @@ class Poster
     /**
      * 合并图片到底图.
      *
-     * @param \Imagick|string $pic    要合并的图片 支持二进制字符串、本地文件路径、远程图片uri、Imagick对象
-     * @param int             $x      图片的起始位置X坐标
-     * @param int             $y      图片的起始位置y坐标
-     * @param int             $width  图片的最终宽度
-     * @param int             $height 图片的最终高度
+     * @param  \Imagick|string  $pic  要合并的图片 支持二进制字符串、本地文件路径、远程图片uri、Imagick对象
+     * @param  int  $x  图片的起始位置X坐标
+     * @param  int  $y  图片的起始位置y坐标
+     * @param  int  $width  图片的最终宽度
+     * @param  int  $height  图片的最终高度
      *
      * @return $this
      * @throws \ImagickException
@@ -212,12 +212,12 @@ class Poster
     /**
      * 添加文字到底图.
      *
-     * @param string $text       文字内容
-     * @param int    $x          文字的起始位置x坐标
-     * @param int    $y          文字的起始位置y坐标
-     * @param int    $fontSize   文字的大小
-     * @param string $fontColor  文字的颜色 支持rgb  'white'|'rgb(255,255,255)'
-     * @param int    $fontWeight 文字粗细 取值范围100-500
+     * @param  string  $text  文字内容
+     * @param  int  $x  文字的起始位置x坐标
+     * @param  int  $y  文字的起始位置y坐标
+     * @param  int  $fontSize  文字的大小
+     * @param  string  $fontColor  文字的颜色 支持rgb  'white'|'rgb(255,255,255)'
+     * @param  int  $fontWeight  文字粗细 取值范围100-500
      *
      * @return $this
      * @throws \Exception
@@ -256,14 +256,14 @@ class Poster
     }
 
     /**
-     * 在底图上画线
+     * 在底图上画线.
      *
-     * @param int    $x1       起点的x坐标
-     * @param int    $y1       起点的y坐标
-     * @param int    $x2       终点的x坐标
-     * @param int    $y2       终点的y坐标
-     * @param string $color    线的颜色 gray|rgb(255,255,255)
-     * @param int    $fontSize 线的粗细
+     * @param  int  $x1  起点的x坐标
+     * @param  int  $y1  起点的y坐标
+     * @param  int  $x2  终点的x坐标
+     * @param  int  $y2  终点的y坐标
+     * @param  string  $color  线的颜色 gray|rgb(255,255,255)
+     * @param  int  $fontSize  线的粗细
      *
      * @return $this
      */
@@ -282,9 +282,9 @@ class Poster
     }
 
     /**
-     * 添加自定义的元素
+     * 添加自定义的元素.
      *
-     * @param \ImagickDraw $draw
+     * @param  \ImagickDraw  $draw
      *
      * @return $this
      */
@@ -298,7 +298,7 @@ class Poster
     /**
      * 保存海报到文件.
      *
-     * @param string $filename 海报保存路径
+     * @param  string  $filename  海报保存路径
      *
      * @return bool|string 传入保存路径为空则返回图片二进制字符串
      */
@@ -320,9 +320,9 @@ class Poster
     /**
      * 将一个Imagick对象保存到文件.
      *
-     * @param stirng   $filename 图片保存路径
-     * @param \Imagick $imagick  imagick对象
-     * @param string   $type     图片类型 png|jpeg
+     * @param  stirng  $filename  图片保存路径
+     * @param  \Imagick  $imagick  imagick对象
+     * @param  string  $type  图片类型 png|jpeg
      */
     public function saveImagick(string $filename, \Imagick $imagick, string $type = 'png')
     {
@@ -334,7 +334,7 @@ class Poster
     /**
      * 获取imagick对象
      *
-     * @param \Imagick|string $obj 本地图片路径、远程图片链接、二进制图片字符串、Imagick对象
+     * @param  \Imagick|string  $obj  本地图片路径、远程图片链接、二进制图片字符串、Imagick对象
      *
      * @return \Imagick
      */
@@ -357,9 +357,9 @@ class Poster
     /**
      * 头像处理.
      *
-     * @param \Imagick|string $pic    需要处理的图片
-     * @param int             $type   处理类型
-     * @param array           $option 额外参数
+     * @param  \Imagick|string  $pic  需要处理的图片
+     * @param  int  $type  处理类型
+     * @param  array  $option  额外参数
      *
      * @return \Imagick
      * @throws \Exception
@@ -385,7 +385,7 @@ class Poster
     /**
      * 生成圆形头像.
      *
-     * @param \Imagick $img 图片
+     * @param  \Imagick  $img  图片
      *
      * @return \Imagick
      */
@@ -401,9 +401,9 @@ class Poster
     /**
      * 生成圆角头像.
      *
-     * @param \Imagick $img    图片
-     * @param array    $option 参数
-     * @param int      $option ['radius'] 圆角比例 默认0。2
+     * @param  \Imagick  $img  图片
+     * @param  array  $option  参数
+     * @param  int  $option  ['radius'] 圆角比例 默认0。2
      *
      * @return \Imagick
      */
@@ -420,11 +420,11 @@ class Poster
     /**
      * 生成圆角边框头像.
      *
-     * @param \Imagick $img    图片
-     * @param array    $option 参数
-     * @param int      $option ['radius']      圆角比例 默认0。2
-     * @param int      $option ['borderWidth'] 边框宽度 默认 2
-     * @param string   $option ['borderColor'] 边框颜色 默认 white
+     * @param  \Imagick  $img  图片
+     * @param  array  $option  参数
+     * @param  int  $option  ['radius']      圆角比例 默认0。2
+     * @param  int  $option  ['borderWidth'] 边框宽度 默认 2
+     * @param  string  $option  ['borderColor'] 边框颜色 默认 white
      *
      * @return \Imagick
      */
@@ -454,7 +454,7 @@ class Poster
     /**
      * 获取图片的长宽.
      *
-     * @param \Imagic|string $img
+     * @param  \Imagic|string  $img
      *
      * @return array ['width'=>32,'height'=>32]
      */
@@ -470,8 +470,8 @@ class Poster
     /**
      * 获取文本在图片中所占的长宽.
      *
-     * @param string $text     文本内容
-     * @param int    $fontSize 字体大小
+     * @param  string  $text  文本内容
+     * @param  int  $fontSize  字体大小
      *
      * @return array $metrix 长宽
      */
@@ -492,9 +492,9 @@ class Poster
     /**
      * 将字符串根据长度拆分为多行. 字体粗细不影响文字的长宽.
      *
-     * @param string $text     文本内容
-     * @param int    $fontSize 字体大小
-     * @param int    $maxWidth 单行最大宽度 默认为海报宽度
+     * @param  string  $text  文本内容
+     * @param  int  $fontSize  字体大小
+     * @param  int  $maxWidth  单行最大宽度 默认为海报宽度
      *
      * @return array[] 返回的是一个二维数组
      */
@@ -560,7 +560,7 @@ class Poster
     /**
      * 从二进制字符串获取图片.
      *
-     * @param string $data 图片二进制字符串
+     * @param  string  $data  图片二进制字符串
      *
      * @return \Imagick
      */
@@ -575,7 +575,7 @@ class Poster
     /**
      * 从本地获取图片.
      *
-     * @param string $path 本地图片路径
+     * @param  string  $path  本地图片路径
      *
      * @return \Imagick
      */
@@ -589,7 +589,7 @@ class Poster
     /**
      * 下载远程图片到本地.
      *
-     * @param string $url 远程图片链接
+     * @param  string  $url  远程图片链接
      *
      * @return \Imagick
      */
@@ -608,15 +608,16 @@ class Poster
     }
 
     /**
+     * 这个方法依赖Endroid\QrCode ，但是加载的时候直接失败了
      * 生成二维码 默认二维码大小为330x330 ，logo大小为100x100.
      *
-     * @param string $url       二维码链接
-     * @param string $filename  二维码保存路径
-     * @param string $logo_path 二维码logo
+     * @param  string  $url  二维码链接
+     * @param  string  $filename  二维码保存路径
+     * @param  string  $logo_path  二维码logo
      *
      * @return string 若传入的保存路径为空，则返回二维码图片的二进制字符串
      */
-    public function setQrcode(string $url, string $filename, string $logo_path = '')
+   /* public function setQrcode1(string $url, string $filename, string $logo_path = '')
     {
         $qrCode = new \Endroid\QrCode\QrCode($url);
         $qrCode->setEncoding('UTF-8');
@@ -631,15 +632,34 @@ class Poster
             return $qrCode->writeString();
         }
         $qrCode->writeFile($filename);
+    }*/
 
-        // $img = new \Imagick();
-        // $img->readImageBlob($qrCode->writeString());
-        // $qrCode = null;
-        // $i = $img->getImageGeometry();
-        // $logo = new \Imagick($logo_path);
-        // $logo_w = round($i['width'] / 3.3);
-        // $logo->scaleimage($logo_w,$logo_w);
-        // $img->compositeImage($logo,\Imagick::COMPOSITE_OVER,($i['width'] - $logo_w) / 2, ($i['width'] - $logo_w) / 2);
-        // $img->writeImage($filename);
+    /**
+     * 生成二维码 默认二维码大小为330x330 ，logo大小为100x100.
+     *
+     * @param  string  $url  二维码链接
+     * @param  string  $filename  二维码保存路径
+     * @param  string  $logo_path  二维码logo
+     * @param string $level 容错级别 默认Q 从低到高 L M Q H
+     * @param int $size 二维码图片大小 默认 8
+     *
+     * @return string 若传入的保存路径为空，则返回二维码图片的二进制字符串
+     */
+    public function setQrcode(string $url, string $filename, string $logo_path = '',string $level='Q',int $size =8)
+    {
+        // 直接引入phpqrcode类库
+        include_once __DIR__.'/phpqrcode.php';
+        QRcode::png($url, $filename, $level, $size, 2);
+        if (empty($logo_path)) {
+            return true;
+        }
+        // TODO 有空了之后改一下phpqrcode，如果需要添加logo的时候， 不先保存二维码图片再读取，而是直接从内存中读取二维码图片的二进制字符串
+        $img = new \Imagick($filename);
+        $i = $img->getImageGeometry();
+        $logo = new \Imagick($logo_path);
+        $logo_w = round($i['width'] / 4);
+        $logo->scaleimage($logo_w, $logo_w);
+        $img->compositeImage($logo, \Imagick::COMPOSITE_OVER, ($i['width'] - $logo_w) / 2, ($i['width'] - $logo_w) / 2);
+        $img->writeImage($filename);
     }
 }
