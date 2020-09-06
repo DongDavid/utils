@@ -72,6 +72,11 @@ composer require dongdavid/utils:dev-master
 touch index.php
 ```
 
+## Changelog  
+
+### v1.1.0(2020-09-07)
+
+修改了二维码的创建方法，移除了对endroid/qr-code的依赖，允许设定二维码的大小及容错率
 
 ## Contributing
 
