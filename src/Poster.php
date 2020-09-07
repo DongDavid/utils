@@ -642,14 +642,15 @@ class Poster
      * @param  string  $logo_path  二维码logo
      * @param string $level 容错级别 默认Q 从低到高 L M Q H
      * @param int $size 二维码图片大小 默认 8
+     * @param int $margin 二维码边距 默认为 2
      *
-     * @return string 若传入的保存路径为空，则返回二维码图片的二进制字符串
+     * @return string
      */
-    public function setQrcode(string $url, string $filename, string $logo_path = '',string $level='Q',int $size =8)
+    public function setQrcode(string $url, string $filename, string $logo_path = '',string $level='Q',int $size =8, int $margin = 2)
     {
         // 直接引入phpqrcode类库
         include_once __DIR__.'/phpqrcode.php';
-        QRcode::png($url, $filename, $level, $size, 2);
+        QRcode::png($url, $filename, $level, $size, $margin);
         if (empty($logo_path)) {
             return true;
         }
