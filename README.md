@@ -11,7 +11,11 @@ $ composer require dongdavid/utils -vvv
 
 ## Require  
 
-* ext-imageMagick
+* ext-imageMagick  
+
+使用二维码还需要以下两种依赖(phpqrcode 的源码里面错误可真是多)
+* ext-zlib
+* ext-gd
 
 ## Usage
 

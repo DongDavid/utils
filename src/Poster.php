@@ -646,7 +646,7 @@ class Poster
      *
      * @return string
      */
-    public function setQrcode(string $url, string $filename, string $logo_path = '',string $level='Q',int $size =8, int $margin = 2)
+    public function setQrcode(string $url, string $filename, string $logo_path = '',string $level='Q',int $size =8, int $margin = 0)
     {
         // 直接引入phpqrcode类库
         include_once __DIR__.'/phpqrcode.php';
