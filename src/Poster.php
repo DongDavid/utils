@@ -256,6 +256,75 @@ class Poster
     }
 
     /**
+     * 添加划线价 自带删除线.
+     *
+     * @param  string  $text  文字内容
+     * @param  int  $x  文字的起始位置x坐标
+     * @param  int  $y  文字的起始位置y坐标
+     * @param  int  $fontSize  文字的大小
+     * @param  string  $fontColor  文字的颜色 支持rgb  'white'|'rgb(255,255,255)'
+     * @param  int  $fontWeight  文字粗细 取值范围100-500
+     * @param  array  $extendLine  删除划线的左右延伸长度百分比
+     *
+     * @return $this
+     * @throws \Exception
+     */
+    public function addMarketingPrice(
+        string $text,
+        int $x,
+        int $y,
+        int $fontSize = 16,
+        $fontColor = 'gray',
+        int $fontWeight = 0,
+        array $extendLine = [5, 5]
+    ) {
+        $draw = new \ImagickDraw();
+
+        $draw->setFont($this->font);
+
+        $draw->setFillColor(new \ImagickPixel($fontColor));
+
+        $draw->setFontSize($fontSize);
+
+        if ($fontWeight > 0) {
+            $draw->setFontWeight($fontWeight);
+        }
+
+        $metrix = $this->canvas->queryFontMetrics($draw, $text);
+        $textWidth = $metrix['textWidth'] + $extendLine[0] + $extendLine[0];
+        if ($this->strict && $x + $textWidth > $this->posterInfo['width']) {
+            throw new \Exception('文字长度不能超出底图');
+        }
+        if ($this->strict
+            && $y > $this->posterInfo['height'] - 5
+            && $y - $metrix['textHeight'] > 0
+        ) {
+            throw new \Exception('文字高度或竖直方向不能超出底图');
+        }
+        // 横线位置
+        // $textHeight / 2 等于文字的实际高度
+        $linePosition = [
+            'x1' => $x - $metrix['textWidth'] * 0.01 * $extendLine[0],
+            'y1' => $y - $metrix['textHeight'] / 4,
+            'x2' => $x + $metrix['textWidth'] * (1 + 0.01 * $extendLine[1]),
+            'y2' => $y - $metrix['textHeight'] / 4,
+        ];
+
+
+        var_dump($linePosition);
+        if ($linePosition['x1'] < 0 || $linePosition['x2'] > $this->posterInfo['width']) {
+            throw new \Exception('横线不能超出底图');
+        }
+
+        $draw->annotation($x, $y, $text);
+        $draw->line($linePosition['x1'], $linePosition['y1'], $linePosition['x2'], $linePosition['y2']);
+
+        $this->canvas->drawImage($draw);
+        $draw->destroy();
+        return $this;
+    }
+
+    /**
      * 在底图上画线.
      *
      * @param  int  $x1  起点的x坐标
@@ -617,22 +686,22 @@ class Poster
      *
      * @return string 若传入的保存路径为空，则返回二维码图片的二进制字符串
      */
-   /* public function setQrcode1(string $url, string $filename, string $logo_path = '')
-    {
-        $qrCode = new \Endroid\QrCode\QrCode($url);
-        $qrCode->setEncoding('UTF-8');
-        $qrCode->setErrorCorrectionLevel(\Endroid\QrCode\ErrorCorrectionLevel::HIGH());
-        $qrCode->setSize(330);
-        $qrCode->setMargin(10);
-        if ( ! empty($logo_path)) {
-            $qrCode->setLogoPath($logo_path);
-            $qrCode->setLogoSize(100, 100);
-        }
-        if (empty($filename)) {
-            return $qrCode->writeString();
-        }
-        $qrCode->writeFile($filename);
-    }*/
+    /* public function setQrcode1(string $url, string $filename, string $logo_path = '')
+     {
+         $qrCode = new \Endroid\QrCode\QrCode($url);
+         $qrCode->setEncoding('UTF-8');
+         $qrCode->setErrorCorrectionLevel(\Endroid\QrCode\ErrorCorrectionLevel::HIGH());
+         $qrCode->setSize(330);
+         $qrCode->setMargin(10);
+         if ( ! empty($logo_path)) {
+             $qrCode->setLogoPath($logo_path);
+             $qrCode->setLogoSize(100, 100);
+         }
+         if (empty($filename)) {
+             return $qrCode->writeString();
+         }
+         $qrCode->writeFile($filename);
+     }*/
 
     /**
      * 生成二维码 默认二维码大小为330x330 ，logo大小为100x100.
@@ -640,14 +709,20 @@ class Poster
      * @param  string  $url  二维码链接
      * @param  string  $filename  二维码保存路径
      * @param  string  $logo_path  二维码logo
-     * @param string $level 容错级别 默认Q 从低到高 L M Q H
-     * @param int $size 二维码图片大小 默认 8
-     * @param int $margin 二维码边距 默认为 2
+     * @param  string  $level  容错级别 默认Q 从低到高 L M Q H
+     * @param  int  $size  二维码图片大小 默认 8
+     * @param  int  $margin  二维码边距 默认为 2
      *
      * @return string
      */
-    public function setQrcode(string $url, string $filename, string $logo_path = '',string $level='Q',int $size =8, int $margin = 0)
-    {
+    public function setQrcode(
+        string $url,
+        string $filename,
+        string $logo_path = '',
+        string $level = 'Q',
+        int $size = 8,
+        int $margin = 0
+    ) {
         // 直接引入phpqrcode类库
         include_once __DIR__.'/phpqrcode.php';
         QRcode::png($url, $filename, $level, $size, $margin);
