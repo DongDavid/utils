@@ -6,7 +6,7 @@
 ## Installing
 
 ```shell
-$ composer require dongdavid/utils ~1.0 -vvv
+$ composer require dongdavid/utils ^1.1 -vvv
 ```
 
 ## Require  

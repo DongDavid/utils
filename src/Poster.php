@@ -217,7 +217,7 @@ class Poster
      * @param  int  $y  文字的起始位置y坐标
      * @param  int  $fontSize  文字的大小
      * @param  string  $fontColor  文字的颜色 支持rgb  'white'|'rgb(255,255,255)'
-     * @param  int  $fontWeight  文字粗细 取值范围100-500
+     * @param  int  $fontWeight  文字粗细 取值范围100-900
      *
      * @return $this
      * @throws \Exception
@@ -263,7 +263,7 @@ class Poster
      * @param  int  $y  文字的起始位置y坐标
      * @param  int  $fontSize  文字的大小
      * @param  string  $fontColor  文字的颜色 支持rgb  'white'|'rgb(255,255,255)'
-     * @param  int  $fontWeight  文字粗细 取值范围100-500
+     * @param  int  $fontWeight  文字粗细 取值范围100-900
      * @param  array  $extendLine  删除划线的左右延伸长度百分比
      *
      * @return $this
@@ -281,8 +281,9 @@ class Poster
         $draw = new \ImagickDraw();
 
         $draw->setFont($this->font);
-
-        $draw->setFillColor(new \ImagickPixel($fontColor));
+        $color = new \ImagickPixel($fontColor);
+//        rgba(153, 153, 153, 1)
+        $draw->setFillColor($color);
 
         $draw->setFontSize($fontSize);
 
@@ -291,10 +292,7 @@ class Poster
         }
 
         $metrix = $this->canvas->queryFontMetrics($draw, $text);
-        $textWidth = $metrix['textWidth'] + $extendLine[0] + $extendLine[0];
-        if ($this->strict && $x + $textWidth > $this->posterInfo['width']) {
-            throw new \Exception('文字长度不能超出底图');
-        }
+
         if ($this->strict
             && $y > $this->posterInfo['height'] - 5
             && $y - $metrix['textHeight'] > 0
@@ -310,17 +308,17 @@ class Poster
             'y2' => $y - $metrix['textHeight'] / 4,
         ];
 
-
-        var_dump($linePosition);
-        if ($linePosition['x1'] < 0 || $linePosition['x2'] > $this->posterInfo['width']) {
+        if ($this->strict && ($linePosition['x1'] < 0 || $linePosition['x2'] > $this->posterInfo['width'])) {
             throw new \Exception('横线不能超出底图');
         }
 
         $draw->annotation($x, $y, $text);
+        $draw->setStrokeColor($color);
         $draw->line($linePosition['x1'], $linePosition['y1'], $linePosition['x2'], $linePosition['y2']);
 
         $this->canvas->drawImage($draw);
         $draw->destroy();
+
         return $this;
     }
 
@@ -501,10 +499,12 @@ class Poster
     {
         $radius = isset($option['radius']) ? $option['radius'] : 0.2;
         $borderColor = isset($option['borderColor']) ? $option['borderColor'] : 'white';
-        $borderWidth = isset($option['borderWidth']) ? $option['borderWidth'] : 2;
 
         $img->setImageFormat('png');
         $i = $img->getImageGeometry();
+        // 取图片长度的6%作为边框的width
+        $borderWidth = isset($option['borderWidth']) ? $option['borderWidth'] : $i['width'] * 0.06;
+
         $radius1 = $i['width'] * $radius;
         $img->roundCorners($radius1, $radius1);
         $canvas = new \Imagick();
@@ -721,7 +721,8 @@ class Poster
         string $logo_path = '',
         string $level = 'Q',
         int $size = 8,
-        int $margin = 0
+        int $margin = 0,
+        int $logoSize = 0
     ) {
         // 直接引入phpqrcode类库
         include_once __DIR__.'/phpqrcode.php';
@@ -733,7 +734,7 @@ class Poster
         $img = new \Imagick($filename);
         $i = $img->getImageGeometry();
         $logo = new \Imagick($logo_path);
-        $logo_w = round($i['width'] / 4);
+        $logo_w = $logoSize > 0 ? $logoSize : round($i['width'] / 3.3);
         $logo->scaleimage($logo_w, $logo_w);
         $img->compositeImage($logo, \Imagick::COMPOSITE_OVER, ($i['width'] - $logo_w) / 2, ($i['width'] - $logo_w) / 2);
         $img->writeImage($filename);
